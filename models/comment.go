@@ -6,7 +6,7 @@ import (
 
 type Comment struct {
 	gorm.Model
-	User_id    uint
-	Photo_id   uint
-	Message    string
+	User_id  uint   `json:"user_id"`
+	Photo_id uint   `json:"photo_id"`
+	Message  string `json:"message"`
 }
