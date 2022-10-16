@@ -26,15 +26,28 @@ func (idb *InDB) Register(c *gin.Context) {
 		return
 	}
 
+	// age validation
+	if user.Age <= 8 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "age must be greater than 8",
+		})
+		return
+	}
+
+	// password validation
 	user.Password, err = HashPassword(user.Password)
 	if err != nil {
-		c.AbortWithError(500, err)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
 		return
 	}
 
 	err = idb.DB.Create(&user).Error
 	if err != nil {
-		c.AbortWithError(500, err)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
 		return
 	}
 

@@ -1,12 +1,16 @@
 package controllers
 
 import (
+	"errors"
 	"regexp"
 
 	"golang.org/x/crypto/bcrypt"
 )
 
 func HashPassword(password string) (string, error) {
+	if len([]rune(password)) < 6 {
+		return "", errors.New(`password minimum 6 characters`)
+	}
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
 	return string(bytes), err
 }
