@@ -18,7 +18,7 @@ func (idb *InDB) Register(c *gin.Context) {
 	c.Bind(&user)
 
 	// email validation
-	_, emailValid := IsEmailValid(user.Email)
+	emailValid := IsEmailValid(user.Email)
 	if !emailValid {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "invalid email",
