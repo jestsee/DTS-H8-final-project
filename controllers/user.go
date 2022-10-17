@@ -7,8 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// https://www.sohamkamani.com/golang/jwt-authentication/
-
 func (idb *InDB) Register(c *gin.Context) {
 	var (
 		user models.User
@@ -35,6 +33,7 @@ func (idb *InDB) Register(c *gin.Context) {
 	}
 
 	// password validation
+	// TODO taroh di beforeCreate kah?
 	user.Password, err = HashPassword(user.Password)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -81,7 +80,7 @@ func (idb *InDB) Login(c *gin.Context) {
 	// password validation
 	valid = IsPasswordValid(login.Password)
 	if !valid {
-		c.JSON(http.StatusBadRequest, gin.H{
+		c.JSON(http.StatusUnauthorized, gin.H{
 			"error": "password does not match",
 		})
 		return
@@ -90,7 +89,7 @@ func (idb *InDB) Login(c *gin.Context) {
 	// password checking
 	err := idb.DB.First(&user, "email = ?", login.Email).Error
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
+		c.JSON(http.StatusUnauthorized, gin.H{
 			"error": err.Error(),
 		})
 		return
@@ -98,13 +97,13 @@ func (idb *InDB) Login(c *gin.Context) {
 
 	valid = CheckPasswordHash(login.Password, user.Password)
 	if !valid {
-		c.JSON(http.StatusBadRequest, gin.H{
+		c.JSON(http.StatusUnauthorized, gin.H{
 			"error": "password does not match",
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"token": "TODO",
+		"token": GenerateToken(user.ID, user.Email),
 	})
 }

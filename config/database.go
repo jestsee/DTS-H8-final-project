@@ -15,7 +15,7 @@ func ConnectDB(config *Config) *gorm.DB {
 	if err != nil {
 		log.Fatal("Failed to connect to the Database")
 	}
-	fmt.Println("? Connected Successfully to the Database")
+	fmt.Println("Connected Successfully to the Database")
 
 	DB.AutoMigrate(&models.User{}, &models.Photo{}, &models.Comment{}, &models.SocialMedia{})
 	if err != nil {
