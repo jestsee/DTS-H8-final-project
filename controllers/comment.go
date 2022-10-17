@@ -107,3 +107,75 @@ func (idb *InDB) AddComment(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, data)
 }
+
+func (idb *InDB) UpdateComment(c *gin.Context) {
+	var comment *models.Comment
+	commentId := c.Param("commentId")
+	userId := utils.GetUserId(c)
+
+	err := idb.DB.First(&comment, commentId).Error
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+
+	if comment.User_id != userId {
+		c.AbortWithStatusJSON(http.StatusUnauthorized,
+			gin.H{
+				"error":   "Unauthorized",
+				"message": "you are not allowed to access this data",
+			})
+		return
+	}
+
+	c.Bind(&comment)
+
+	err = idb.DB.Save(&comment).Error
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+
+	// TODO salah ya outputnya?
+	resp := map[string]interface{}{
+		"id":         comment.Id,
+		"user_id":    comment.User_id,
+		"photo_id":   comment.Photo_id,
+		"message":    comment.Message,
+		"updated_at": comment.UpdatedAt,
+	}
+	c.JSON(http.StatusOK, resp)
+}
+
+func (idb *InDB) DeleteComment(c *gin.Context) {
+	var comment *models.Comment
+	commentId := c.Param("commentId")
+	userId := utils.GetUserId(c)
+
+	err := idb.DB.First(&comment, commentId).Error
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+
+	if comment.User_id != userId {
+		c.AbortWithStatusJSON(http.StatusUnauthorized,
+			gin.H{
+				"error":   "Unauthorized",
+				"message": "you are not allowed to access this data",
+			})
+		return
+	}
+
+	c.Bind(&comment)
+
+	err = idb.DB.Delete(&comment).Error
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Your comment has been successfully deleted",
+	})
+}

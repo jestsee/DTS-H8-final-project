@@ -36,6 +36,8 @@ func main() {
 
 		r.GET("/comments", inDB.GetComments)
 		r.POST("/comments", inDB.AddComment)
+		r.PUT("/comments/:commentId", inDB.UpdateComment)
+		r.DELETE("/comments/:commentId", inDB.DeleteComment)
 	}
 	
 	router.Run(":3000")

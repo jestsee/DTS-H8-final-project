@@ -73,10 +73,10 @@ func (idb *InDB) AddPhoto(c *gin.Context) {
 
 func (idb *InDB) UpdatePhoto(c *gin.Context) {
 	var photo *models.Photo
-	id := c.Param("photoId")
+	photoId := c.Param("photoId")
 	userId := utils.GetUserId(c)
 
-	err := idb.DB.First(&photo, id).Error
+	err := idb.DB.First(&photo, photoId).Error
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
