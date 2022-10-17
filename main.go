@@ -22,10 +22,19 @@ func main() {
 	router.POST("/register", inDB.Register)
 	router.POST("/login", inDB.Login)
 
+	userRouter := router.Group("/users")
+	{
+		userRouter.Use(middleware.Authentication())
+		userRouter.PUT("/", inDB.UpdateUser)
+	}
+	router.PUT("/users", inDB.Login) // TODO harus authorization
+
 	photoRouter := router.Group("/photos") 
 	{
 		photoRouter.Use(middleware.Authentication())
+		photoRouter.GET("/", inDB.GetPhotos)
 		photoRouter.POST("/", inDB.AddPhoto)
 	}
+	
 	router.Run(":3000")
 }

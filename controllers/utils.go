@@ -91,3 +91,9 @@ func VerifyToken(c *gin.Context) (interface{}, error) {
 
 	return token.Claims.(jwt.MapClaims), nil
 }
+
+func GetUserId(c* gin.Context) uint {
+	userData := c.MustGet("userData").(jwt.MapClaims)
+	userId := uint(userData["id"].(float64))
+	return userId
+}

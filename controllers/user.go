@@ -3,8 +3,8 @@ package controllers
 import (
 	"myGram/models"
 	"net/http"
-
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm/clause"
 )
 
 func (idb *InDB) Register(c *gin.Context) {
@@ -53,7 +53,7 @@ func (idb *InDB) Register(c *gin.Context) {
 	data = map[string]interface{}{
 		"age":      user.Age,
 		"email":    user.Email,
-		"id":       user.ID,
+		"id":       user.Id,
 		"username": user.Username,
 	}
 
@@ -104,6 +104,34 @@ func (idb *InDB) Login(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"token": GenerateToken(user.ID, user.Email),
+		"token": GenerateToken(user.Id, user.Email),
 	})
+}
+
+// TODO ga usah kan ya?
+// func (idb *InDB) UserAuthorization() gin.HandlerFunc {
+// 
+// }
+
+func (idb *InDB) UpdateUser(c *gin.Context) {
+	var user models.User
+	userId := GetUserId(c)
+	user.Id = userId
+
+	c.Bind(&user)
+
+	err := idb.DB.Model(&user).Clauses(clause.Returning{}).Updates(models.User{Username: user.Username, Email: user.Email}).Error
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+
+	data := map[string]interface{}{
+		"id":         user.Id,
+		"email":      user.Email,
+		"username":   user.Username,
+		"age":        user.Age,
+		"updated_at": user.UpdatedAt,
+	}
+	c.JSON(http.StatusOK, data)
 }
