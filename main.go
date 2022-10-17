@@ -20,21 +20,18 @@ func main() {
 	inDB := &controllers.InDB{DB: db, Conf: &conf}
 	router := gin.Default()
 
-	router.POST("/register", inDB.Register)
-	router.POST("/login", inDB.Login)
+	router.POST("api/v1/register", inDB.Register)
+	router.POST("api/v1/login", inDB.Login)
 
-	userRouter := router.Group("/users")
+	r := router.Group("api/v1")
 	{
-		userRouter.Use(middleware.Authentication(*inDB.Conf))
-		userRouter.PUT("/", inDB.UpdateUser)
-		userRouter.DELETE("/", inDB.DeleteUser)
-	}
-
-	photoRouter := router.Group("/photos") 
-	{
-		photoRouter.Use(middleware.Authentication(*inDB.Conf))
-		photoRouter.GET("/", inDB.GetPhotos)
-		photoRouter.POST("/", inDB.AddPhoto)
+		r.Use(middleware.Authentication(*inDB.Conf))
+		r.PUT("/users", inDB.UpdateUser)
+		r.DELETE("/users", inDB.DeleteUser)
+		
+		r.GET("/photos", inDB.GetPhotos)
+		r.POST("/photos", inDB.AddPhoto)
+		r.PUT("/photos/:photoId", inDB.UpdatePhoto)
 	}
 	
 	router.Run(":3000")
