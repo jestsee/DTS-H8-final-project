@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"myGram/models"
+	"myGram/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -9,7 +10,7 @@ import (
 
 func (idb *InDB) GetPhotos(c *gin.Context) {
 	var photos []models.Photo
-	userId := GetUserId(c)
+	userId := utils.GetUserId(c)
 
 	err := idb.DB.Find(&photos, "User_id = ?", userId).Error
 	if err != nil {
@@ -24,7 +25,7 @@ func (idb *InDB) GetPhotos(c *gin.Context) {
 
 func (idb *InDB) AddPhoto(c *gin.Context) {
 	var photo models.Photo
-	userId := GetUserId(c)
+	userId := utils.GetUserId(c)
 
 	c.Bind(&photo)
 

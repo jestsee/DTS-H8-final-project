@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"myGram/models"
+	"myGram/utils"
 	"net/http"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm/clause"
@@ -14,33 +15,6 @@ func (idb *InDB) Register(c *gin.Context) {
 		err  error
 	)
 	c.Bind(&user)
-
-	// email validation
-	emailValid := IsEmailValid(user.Email)
-	if !emailValid {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "invalid email",
-		})
-		return
-	}
-
-	// age validation
-	if user.Age <= 8 {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "age must be greater than 8",
-		})
-		return
-	}
-
-	// password validation
-	// TODO taroh di beforeCreate kah?
-	user.Password, err = HashPassword(user.Password)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
-		return
-	}
 
 	err = idb.DB.Create(&user).Error
 	if err != nil {
@@ -68,24 +42,6 @@ func (idb *InDB) Login(c *gin.Context) {
 
 	c.Bind(&login)
 
-	// email validation
-	valid := IsEmailValid(login.Email)
-	if !valid {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "invalid email",
-		})
-		return
-	}
-
-	// password validation
-	valid = IsPasswordValid(login.Password)
-	if !valid {
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"error": "password does not match",
-		})
-		return
-	}
-
 	// password checking
 	err := idb.DB.First(&user, "email = ?", login.Email).Error
 	if err != nil {
@@ -95,7 +51,7 @@ func (idb *InDB) Login(c *gin.Context) {
 		return
 	}
 
-	valid = CheckPasswordHash(login.Password, user.Password)
+	valid := utils.CheckPasswordHash(login.Password, user.Password)
 	if !valid {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"error": "password does not match",
@@ -104,18 +60,13 @@ func (idb *InDB) Login(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"token": GenerateToken(user.Id, user.Email),
+		"token": utils.GenerateToken(user.Id, user.Email, *idb.Conf),
 	})
 }
 
-// TODO ga usah kan ya?
-// func (idb *InDB) UserAuthorization() gin.HandlerFunc {
-// 
-// }
-
 func (idb *InDB) UpdateUser(c *gin.Context) {
 	var user models.User
-	userId := GetUserId(c)
+	userId := utils.GetUserId(c)
 	user.Id = userId
 
 	c.Bind(&user)

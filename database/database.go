@@ -1,14 +1,16 @@
-package config
+package database
 
 import (
 	"fmt"
+	"log"
+	"myGram/config"
+	"myGram/models"
+
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"log"
-	"myGram/models"
 )
 
-func ConnectDB(config *Config) *gorm.DB {
+func ConnectDB(config *config.Config) *gorm.DB {
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Shanghai", config.DBHost, config.DBUserName, config.DBUserPassword, config.DBName, config.DBPort)
 
 	DB, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})

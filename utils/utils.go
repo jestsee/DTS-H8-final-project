@@ -1,8 +1,7 @@
-package controllers
+package utils
 
 import (
 	"errors"
-	"log"
 	"myGram/config"
 	"regexp"
 	"strings"
@@ -34,35 +33,22 @@ func IsPasswordValid(password string) bool {
 	return len([]rune(password)) >= 6
 }
 
-func GetSecretKey() (string, error) {
-	conf, err := config.LoadConfig("../")
-	if err != nil {
-		return "", err
-	}
-	return conf.SecretKey, nil
-}
-
 func GetContentType(c *gin.Context) string {
 	return c.Request.Header.Get("Content-Type")
 }
 
-func GenerateToken(id uint, email string) string {
+func GenerateToken(id uint, email string, conf config.Config) string {
 	claims := jwt.MapClaims{
 		"id":    id,
 		"email": email,
 	}
 
 	parseToken := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-
-	conf, err := GetSecretKey()
-	if err != nil {
-		log.Fatal("Could not load environment variables", err)
-	}
-	signedToken, _ := parseToken.SignedString([]byte(conf))
+	signedToken, _ := parseToken.SignedString([]byte(conf.SecretKey))
 	return signedToken
 }
 
-func VerifyToken(c *gin.Context) (interface{}, error) {
+func VerifyToken(c *gin.Context, conf config.Config) (interface{}, error) {
 	errResponse := errors.New("sign in proceed")
 	headerToken := c.Request.Header.Get("Authorization")
 	bearer := strings.HasPrefix(headerToken, "Bearer")
@@ -77,12 +63,8 @@ func VerifyToken(c *gin.Context) (interface{}, error) {
 		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, errResponse
 		}
-		conf, err := GetSecretKey()
-		if err != nil {
-			log.Fatal("Could not load environment variables", err)
-		}
 
-		return []byte(conf), nil
+		return []byte(conf.SecretKey), nil
 	})
 
 	if _, ok := token.Claims.(jwt.MapClaims); !ok && !token.Valid {

@@ -1,15 +1,16 @@
 package middleware
 
 import (
-	"myGram/controllers"
+	"myGram/config"
+	"myGram/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-func Authentication() gin.HandlerFunc {
+func Authentication(conf config.Config) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		verifyToken, err := controllers.VerifyToken(c)
+		verifyToken, err := utils.VerifyToken(c, conf)
 		_ = verifyToken
 
 		if err != nil {
