@@ -9,7 +9,10 @@ import (
 )
 
 func (idb *InDB) GetPhotos(c *gin.Context) {
-	var photos []models.Photo
+	var (
+		photos []models.Photo
+		user   models.User
+	)
 	userId := utils.GetUserId(c)
 
 	err := idb.DB.Find(&photos, "user_id = ?", userId).Error
@@ -18,6 +21,21 @@ func (idb *InDB) GetPhotos(c *gin.Context) {
 			"error":   "Bad request",
 			"message": err.Error(),
 		})
+		return
+	}
+
+	err = idb.DB.First(&user, userId).Error
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"error":   "Bad request",
+			"message": err.Error(),
+		})
+		return
+	}
+
+	for i := range photos {
+		photos[i].User.Email = user.Email
+		photos[i].User.Username = user.Username
 	}
 
 	c.JSON(http.StatusOK, photos)
@@ -41,7 +59,7 @@ func (idb *InDB) AddPhoto(c *gin.Context) {
 		return
 	}
 
-	data := map[string]interface{}{
+	resp := map[string]interface{}{
 		"id":         photo.Id,
 		"title":      photo.Title,
 		"caption":    photo.Caption,
@@ -50,7 +68,7 @@ func (idb *InDB) AddPhoto(c *gin.Context) {
 		"created_at": photo.CreatedAt,
 	}
 
-	c.JSON(http.StatusCreated, data)
+	c.JSON(http.StatusCreated, resp)
 }
 
 func (idb *InDB) UpdatePhoto(c *gin.Context) {
@@ -81,7 +99,7 @@ func (idb *InDB) UpdatePhoto(c *gin.Context) {
 		return
 	}
 
-	data := map[string]interface{}{
+	resp := map[string]interface{}{
 		"id":         photo.Id,
 		"title":      photo.Title,
 		"caption":    photo.Caption,
@@ -89,7 +107,7 @@ func (idb *InDB) UpdatePhoto(c *gin.Context) {
 		"user_id":    photo.User_id,
 		"updated_at": photo.UpdatedAt,
 	}
-	c.JSON(http.StatusOK, data)
+	c.JSON(http.StatusOK, resp)
 }
 
 func (idb *InDB) DeletePhoto(c *gin.Context) {

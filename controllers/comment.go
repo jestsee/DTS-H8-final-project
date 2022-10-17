@@ -9,7 +9,10 @@ import (
 )
 
 func (idb *InDB) GetComments(c *gin.Context) {
-	var comments []models.Comment
+	var (
+		comments []models.Comment
+		user     models.User
+	)
 	userId := utils.GetUserId(c)
 
 	err := idb.DB.Find(&comments, "user_id = ?", userId).Error
@@ -18,6 +21,39 @@ func (idb *InDB) GetComments(c *gin.Context) {
 			"error":   "Bad request",
 			"message": err.Error(),
 		})
+		return
+	}
+
+	err = idb.DB.First(&user, userId).Error
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"error":   "Bad request",
+			"message": err.Error(),
+		})
+		return
+	}
+
+	for i := range comments {
+		comments[i].User.Id = user.Id
+		comments[i].User.Email = user.Email
+		comments[i].User.Username = user.Username
+
+		photo := models.Photo{}
+
+		err = idb.DB.Find(&photo, comments[i].Photo_id).Error
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+				"error":   "Bad request",
+				"message": err.Error(),
+			})
+			return
+		}
+
+		comments[i].Photo.Id = photo.Id
+		comments[i].Photo.Title = photo.Title
+		comments[i].Photo.Caption = photo.Caption
+		comments[i].Photo.Photo_url = photo.Photo_url
+		comments[i].Photo.User_id = photo.User_id
 	}
 
 	c.JSON(http.StatusOK, comments)
