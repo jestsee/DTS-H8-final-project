@@ -27,8 +27,8 @@ func main() {
 	{
 		userRouter.Use(middleware.Authentication(*inDB.Conf))
 		userRouter.PUT("/", inDB.UpdateUser)
+		userRouter.DELETE("/", inDB.DeleteUser)
 	}
-	router.PUT("/users", inDB.Login) // TODO harus authorization
 
 	photoRouter := router.Group("/photos") 
 	{

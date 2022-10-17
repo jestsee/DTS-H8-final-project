@@ -86,3 +86,19 @@ func (idb *InDB) UpdateUser(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, data)
 }
+
+func (idb *InDB) DeleteUser(c *gin.Context) {
+	var user models.User
+	userId := utils.GetUserId(c)
+	user.Id = userId
+
+	err := idb.DB.Delete(&user).Error
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Your account has been successfully deleted",
+	})
+}
