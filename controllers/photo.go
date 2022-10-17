@@ -72,5 +72,46 @@ func (idb *InDB) UpdatePhoto(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, photo)
+	data := map[string]interface{}{
+		"id":         photo.Id,
+		"title": photo.Title,
+		"caption": photo.Caption,
+		"photo_url": photo.Photo_url,
+		"user_id": photo.User_id,
+		"updated_at": photo.UpdatedAt,
+	}
+	c.JSON(http.StatusOK, data)
+}
+
+func (idb *InDB) DeletePhoto(c *gin.Context) {
+	var photo *models.Photo
+	id := c.Param("photoId")
+	userId := utils.GetUserId(c)
+
+	err := idb.DB.First(&photo, id).Error
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+
+	if photo.User_id != userId {
+		c.AbortWithStatusJSON(http.StatusUnauthorized,
+			gin.H{
+				"error": "Unauthorized", 
+				"message": "you are not allowed to access this data",
+			})
+		return
+	}
+
+	c.Bind(&photo)
+
+	err = idb.DB.Delete(&photo).Error
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Your photo has been successfully deleted",
+	})
 }
