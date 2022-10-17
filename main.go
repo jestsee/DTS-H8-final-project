@@ -18,7 +18,7 @@ func main() {
 	inDB := &controllers.InDB{DB: db}
 	router := gin.Default()
 
-	// router.GET("/orders", inDB.GetUsers)
 	router.POST("/register", inDB.Register)
+	router.POST("/login", inDB.Login)
 	router.Run(":3000")
 }

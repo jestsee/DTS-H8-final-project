@@ -8,7 +8,7 @@ import (
 )
 
 func HashPassword(password string) (string, error) {
-	if len([]rune(password)) < 6 {
+	if !IsPasswordValid(password) {
 		return "", errors.New(`password minimum 6 characters`)
 	}
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
@@ -23,4 +23,8 @@ func CheckPasswordHash(password, hash string) bool {
 func IsEmailValid(address string) bool {
 	re := regexp.MustCompile(`^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,4}$`)
 	return re.MatchString(address)
+}
+
+func IsPasswordValid(password string) bool {
+	return len([]rune(password)) >= 6
 }

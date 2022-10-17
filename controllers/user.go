@@ -60,3 +60,51 @@ func (idb *InDB) Register(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, gin.H(data))
 }
+
+func (idb *InDB) Login(c *gin.Context) {
+	var (
+		login models.Login
+		user  models.User
+	)
+
+	c.Bind(&login)
+
+	// email validation
+	valid := IsEmailValid(login.Email)
+	if !valid {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "invalid email",
+		})
+		return
+	}
+
+	// password validation
+	valid = IsPasswordValid(login.Password)
+	if !valid {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "password does not match",
+		})
+		return
+	}
+
+	// password checking
+	err := idb.DB.First(&user, "email = ?", login.Email).Error
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	valid = CheckPasswordHash(login.Password, user.Password)
+	if !valid {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "password does not match",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"token": "TODO",
+	})
+}
