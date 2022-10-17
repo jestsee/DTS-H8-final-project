@@ -33,6 +33,9 @@ func main() {
 		r.POST("/photos", inDB.AddPhoto)
 		r.PUT("/photos/:photoId", inDB.UpdatePhoto)
 		r.DELETE("/photos/:photoId", inDB.DeletePhoto)
+
+		r.GET("/comments", inDB.GetComments)
+		r.POST("/comments", inDB.AddComment)
 	}
 	
 	router.Run(":3000")

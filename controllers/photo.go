@@ -12,7 +12,7 @@ func (idb *InDB) GetPhotos(c *gin.Context) {
 	var photos []models.Photo
 	userId := utils.GetUserId(c)
 
-	err := idb.DB.Find(&photos, "User_id = ?", userId).Error
+	err := idb.DB.Find(&photos, "user_id = ?", userId).Error
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error":   "Bad request",
@@ -41,7 +41,16 @@ func (idb *InDB) AddPhoto(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, photo)
+	data := map[string]interface{}{
+		"id":         photo.Id,
+		"title":      photo.Title,
+		"caption":    photo.Caption,
+		"photo_url":  photo.Photo_url,
+		"user_id":    photo.User_id,
+		"created_at": photo.CreatedAt,
+	}
+
+	c.JSON(http.StatusCreated, data)
 }
 
 func (idb *InDB) UpdatePhoto(c *gin.Context) {
@@ -58,7 +67,7 @@ func (idb *InDB) UpdatePhoto(c *gin.Context) {
 	if photo.User_id != userId {
 		c.AbortWithStatusJSON(http.StatusUnauthorized,
 			gin.H{
-				"error": "Unauthorized", 
+				"error":   "Unauthorized",
 				"message": "you are not allowed to access this data",
 			})
 		return
@@ -74,10 +83,10 @@ func (idb *InDB) UpdatePhoto(c *gin.Context) {
 
 	data := map[string]interface{}{
 		"id":         photo.Id,
-		"title": photo.Title,
-		"caption": photo.Caption,
-		"photo_url": photo.Photo_url,
-		"user_id": photo.User_id,
+		"title":      photo.Title,
+		"caption":    photo.Caption,
+		"photo_url":  photo.Photo_url,
+		"user_id":    photo.User_id,
 		"updated_at": photo.UpdatedAt,
 	}
 	c.JSON(http.StatusOK, data)
@@ -97,7 +106,7 @@ func (idb *InDB) DeletePhoto(c *gin.Context) {
 	if photo.User_id != userId {
 		c.AbortWithStatusJSON(http.StatusUnauthorized,
 			gin.H{
-				"error": "Unauthorized", 
+				"error":   "Unauthorized",
 				"message": "you are not allowed to access this data",
 			})
 		return
