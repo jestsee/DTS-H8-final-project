@@ -26,7 +26,7 @@ import (
 
 // @termsOfService http://swagger.io/terms
 // @host localhost:3000
-// @BasePath /
+// @BasePath /api/v1
 func main() {
 	conf, err := config.LoadConfig(".")
 	if err != nil {
@@ -40,8 +40,8 @@ func main() {
 	// docs route
 	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	router.POST("api/v1/register", inDB.Register)
-	router.POST("api/v1/login", inDB.Login)
+	router.POST("api/v1/users/register", inDB.Register)
+	router.POST("api/v1/users/login", inDB.Login)
 
 	r := router.Group("api/v1")
 	{

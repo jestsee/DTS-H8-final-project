@@ -436,7 +436,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "$ref": "#/definitions/models.UpdateUserRequest"
                         }
                     }
                 ],
@@ -444,7 +444,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "$ref": "#/definitions/models.UpdateUserResponse"
                         }
                     }
                 }
@@ -544,35 +544,6 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "models.Comment": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "photo": {
-                    "$ref": "#/definitions/models.PhotoC"
-                },
-                "photo_id": {
-                    "type": "integer"
-                },
-                "updated_at": {
-                    "type": "string"
-                },
-                "user": {
-                    "$ref": "#/definitions/models.UserC"
-                },
-                "user_id": {
-                    "type": "integer"
-                }
-            }
-        },
         "models.CreateCommentRequest": {
             "type": "object",
             "properties": {
@@ -779,35 +750,6 @@ const docTemplate = `{
                 }
             }
         },
-        "models.Photo": {
-            "type": "object",
-            "properties": {
-                "caption": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "photo_url": {
-                    "type": "string"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                },
-                "user": {
-                    "$ref": "#/definitions/models.UserP"
-                },
-                "user_id": {
-                    "type": "integer"
-                }
-            }
-        },
         "models.PhotoC": {
             "type": "object",
             "properties": {
@@ -859,32 +801,6 @@ const docTemplate = `{
                 },
                 "username": {
                     "type": "string"
-                }
-            }
-        },
-        "models.SocialMedia": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "social_media_url": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                },
-                "user": {
-                    "$ref": "#/definitions/models.UserS"
-                },
-                "user_id": {
-                    "type": "integer"
                 }
             }
         },
@@ -981,41 +897,28 @@ const docTemplate = `{
                 }
             }
         },
-        "models.User": {
+        "models.UpdateUserRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UpdateUserResponse": {
             "type": "object",
             "properties": {
                 "age": {
                     "type": "integer"
-                },
-                "comments": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.Comment"
-                    }
-                },
-                "created_at": {
-                    "type": "string"
                 },
                 "email": {
                     "type": "string"
                 },
                 "id": {
                     "type": "integer"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "photos": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.Photo"
-                    }
-                },
-                "socialMedia": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.SocialMedia"
-                    }
                 },
                 "updated_at": {
                     "type": "string"
@@ -1033,17 +936,6 @@ const docTemplate = `{
                 },
                 "id": {
                     "type": "integer"
-                },
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.UserP": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
                 },
                 "username": {
                     "type": "string"
@@ -1068,7 +960,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "localhost:3000",
-	BasePath:         "/",
+	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "myGram API",
 	Description:      "DTS H8 Final Project",

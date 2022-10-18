@@ -88,8 +88,8 @@ func (idb *InDB) Login(c *gin.Context) {
 // @Security Bearer
 // @Param authorization header string true "Authorization"
 // @Param userId query int true "Update user"
-// @Param user body models.User true "Update user"
-// @Success 200 {object} models.User
+// @Param user body models.UpdateUserRequest true "Update user"
+// @Success 200 {object} models.UpdateUserResponse
 // @Router /users [put]
 func (idb *InDB) UpdateUser(c *gin.Context) {
 	var user models.User

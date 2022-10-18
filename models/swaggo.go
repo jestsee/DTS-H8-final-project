@@ -25,6 +25,18 @@ type LoginResponse struct {
 	Token string `json:"token"`
 }
 
+type UpdateUserRequest struct {
+	Email    string `json:"email"`
+	Username string `json:"username"`
+}
+
+type UpdateUserResponse struct {
+	Id uint `json:"id"`
+	UpdateUserRequest
+	Age       uint      `json:"age"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
 type DeleteResponse struct {
 	Message string `json:"message"`
 }
