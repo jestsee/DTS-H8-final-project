@@ -42,3 +42,11 @@ func (u *User) BeforeDelete(tx *gorm.DB) error {
 	err = tx.Model(u.Photos).Where("user_id = ?", u.Id).Delete(u.Photos).Error
 	return err
 }
+
+func (p *Photo) BeforeDelete(tx *gorm.DB) error {
+	err := tx.Model(p.Comments).Where("photo_id = ?", p.Id).Delete(p.Comments).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}

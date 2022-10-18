@@ -38,6 +38,11 @@ func main() {
 		r.POST("/comments", inDB.AddComment)
 		r.PUT("/comments/:commentId", inDB.UpdateComment)
 		r.DELETE("/comments/:commentId", inDB.DeleteComment)
+		
+		r.GET("/socialmedias", inDB.GetSocialMedias)
+		r.POST("/socialmedias", inDB.AddSocialMedia)
+		r.PUT("/socialmedias/:socialMediaId", inDB.UpdateSocialMedia)
+		r.DELETE("/socialmedias/:socialMediaId", inDB.DeleteSocialMedia)
 	}
 	
 	router.Run(":3000")
