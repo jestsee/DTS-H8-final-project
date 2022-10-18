@@ -1,0 +1,685 @@
+basePath: /
+definitions:
+  models.Comment:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      message:
+        type: string
+      photo:
+        $ref: '#/definitions/models.PhotoC'
+      photo_id:
+        type: integer
+      updated_at:
+        type: string
+      user:
+        $ref: '#/definitions/models.UserC'
+      user_id:
+        type: integer
+    type: object
+  models.CreateCommentRequest:
+    properties:
+      message:
+        type: string
+      photo_id:
+        type: integer
+    type: object
+  models.CreateCommentResponse:
+    properties:
+      id:
+        type: integer
+      message:
+        type: string
+      photo_id:
+        type: integer
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  models.CreatePhotoRequest:
+    properties:
+      caption:
+        type: string
+      photo_url:
+        type: string
+      title:
+        type: string
+    type: object
+  models.CreatePhotoResponse:
+    properties:
+      caption:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      photo_url:
+        type: string
+      title:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  models.CreateSocialMediaRequest:
+    properties:
+      name:
+        type: string
+      social_media_url:
+        type: string
+    type: object
+  models.CreateSocialMediaResponse:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      social_media_url:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  models.DeleteResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  models.GetCommentResponse:
+    properties:
+      created_at:
+        type: string
+      message:
+        type: string
+      photo:
+        $ref: '#/definitions/models.PhotoC'
+      photo_id:
+        type: integer
+      user:
+        $ref: '#/definitions/models.UserC'
+    type: object
+  models.GetPhotoResponse:
+    properties:
+      caption:
+        type: string
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      photo_url:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+      username:
+        type: string
+    type: object
+  models.GetSocialMediaResponse:
+    properties:
+      social_medias:
+        items:
+          $ref: '#/definitions/models.GetSocialMediaResponseItem'
+        type: array
+    type: object
+  models.GetSocialMediaResponseItem:
+    properties:
+      name:
+        type: string
+      social_media_url:
+        type: string
+      updated_at:
+        type: string
+      user:
+        $ref: '#/definitions/models.UserS'
+    type: object
+  models.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  models.LoginResponse:
+    properties:
+      token:
+        type: string
+    type: object
+  models.Photo:
+    properties:
+      caption:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      photo_url:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+      user:
+        $ref: '#/definitions/models.UserP'
+      user_id:
+        type: integer
+    type: object
+  models.PhotoC:
+    properties:
+      caption:
+        type: string
+      id:
+        type: integer
+      photo_url:
+        type: string
+      title:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  models.RegisterRequest:
+    properties:
+      age:
+        type: integer
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  models.RegisterResponse:
+    properties:
+      age:
+        type: integer
+      email:
+        type: string
+      id:
+        type: integer
+      username:
+        type: string
+    type: object
+  models.SocialMedia:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      social_media_url:
+        type: string
+      updated_at:
+        type: string
+      user:
+        $ref: '#/definitions/models.UserS'
+      user_id:
+        type: integer
+    type: object
+  models.UpdateCommentRequest:
+    properties:
+      message:
+        type: string
+    type: object
+  models.UpdateCommentResponse:
+    properties:
+      id:
+        type: integer
+      message:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  models.UpdatePhotoRequest:
+    properties:
+      caption:
+        type: string
+      photo_url:
+        type: string
+      title:
+        type: string
+    type: object
+  models.UpdatePhotoResponse:
+    properties:
+      caption:
+        type: string
+      id:
+        type: integer
+      photo_url:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  models.UpdateSocialMediaRequest:
+    properties:
+      name:
+        type: string
+      social_media_url:
+        type: string
+    type: object
+  models.UpdateSocialMediaResponse:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      social_media_url:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  models.User:
+    properties:
+      age:
+        type: integer
+      comments:
+        items:
+          $ref: '#/definitions/models.Comment'
+        type: array
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      password:
+        type: string
+      photos:
+        items:
+          $ref: '#/definitions/models.Photo'
+        type: array
+      socialMedia:
+        items:
+          $ref: '#/definitions/models.SocialMedia'
+        type: array
+      updated_at:
+        type: string
+      username:
+        type: string
+    type: object
+  models.UserC:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      username:
+        type: string
+    type: object
+  models.UserP:
+    properties:
+      email:
+        type: string
+      username:
+        type: string
+    type: object
+  models.UserS:
+    properties:
+      id:
+        type: integer
+      username:
+        type: string
+    type: object
+host: localhost:3000
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: DTS H8 Final Project
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: http://swagger.io/terms
+  title: myGram API
+  version: "1.0"
+paths:
+  /comments:
+    delete:
+      description: Delete existing comment
+      parameters:
+      - description: Authorization
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: Delete comment
+        in: query
+        name: commentId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.DeleteResponse'
+      security:
+      - Bearer: []
+      summary: Delete existing comment
+    get:
+      description: Get all comments of speicifc user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.GetCommentResponse'
+            type: array
+      summary: Get all comments of speicifc user
+    post:
+      description: Add new comment
+      parameters:
+      - description: Create comment
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateCommentRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.CreateCommentResponse'
+      summary: Add new comment
+    put:
+      description: Update existing comment
+      parameters:
+      - description: Authorization
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: Update comment
+        in: query
+        name: commentId
+        required: true
+        type: integer
+      - description: Update comment
+        in: body
+        name: comment
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateCommentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UpdateCommentResponse'
+      security:
+      - Bearer: []
+      summary: Update existing comment
+  /photos:
+    delete:
+      description: Delete existing photo
+      parameters:
+      - description: Authorization
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: Delete photo
+        in: query
+        name: photoId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.DeleteResponse'
+      security:
+      - Bearer: []
+      summary: Delete existing photo
+    get:
+      description: Get all photos of speicifc user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.GetPhotoResponse'
+            type: array
+      summary: Get all photos of speicifc user
+    post:
+      description: Add new photo
+      parameters:
+      - description: Create photo
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreatePhotoRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.CreatePhotoResponse'
+      summary: Add new photo
+    put:
+      description: Update existing photo
+      parameters:
+      - description: Authorization
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: Update photo
+        in: query
+        name: photoId
+        required: true
+        type: integer
+      - description: Update photo
+        in: body
+        name: photo
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdatePhotoRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UpdatePhotoResponse'
+      security:
+      - Bearer: []
+      summary: Update existing photo
+  /socialMedias:
+    delete:
+      description: Delete existing social media
+      parameters:
+      - description: Authorization
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: Delete social media
+        in: query
+        name: socialMediaId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.DeleteResponse'
+      security:
+      - Bearer: []
+      summary: Delete existing social media
+    get:
+      description: Get all social medias of speicifc user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetSocialMediaResponse'
+      summary: Get all social medias of speicifc user
+    post:
+      description: Add new social media
+      parameters:
+      - description: Create social media
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateSocialMediaRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.CreateSocialMediaResponse'
+      summary: Add new social media
+    put:
+      description: Update existing social media
+      parameters:
+      - description: Authorization
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: Update social media
+        in: query
+        name: socialMediaId
+        required: true
+        type: integer
+      - description: Update social media
+        in: body
+        name: socialMedia
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateSocialMediaRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UpdateSocialMediaResponse'
+      security:
+      - Bearer: []
+      summary: Update existing social media
+  /users:
+    delete:
+      description: Delete existing user
+      parameters:
+      - description: Authorization
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: Delete user
+        in: query
+        name: userId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.DeleteResponse'
+      security:
+      - Bearer: []
+      summary: Delete existing user
+    put:
+      description: Update existing user
+      parameters:
+      - description: Authorization
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: Update user
+        in: query
+        name: userId
+        required: true
+        type: integer
+      - description: Update user
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      security:
+      - Bearer: []
+      summary: Update existing user
+  /users/login:
+    post:
+      description: Login existing user
+      parameters:
+      - description: Login user
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.LoginResponse'
+      summary: Login existing user
+  /users/register:
+    post:
+      description: Register new user
+      parameters:
+      - description: Create user
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.RegisterResponse'
+      summary: Register new user
+swagger: "2.0"

@@ -1,13 +1,21 @@
 package controllers
 
 import (
+	"github.com/gin-gonic/gin"
+	"gorm.io/gorm/clause"
 	"myGram/models"
 	"myGram/utils"
 	"net/http"
-	"github.com/gin-gonic/gin"
-	"gorm.io/gorm/clause"
 )
 
+// Register godoc
+// @Summary Register new user
+// @Description Register new user
+// @Tag User
+// @Produce json
+// @Param user body models.RegisterRequest true "Create user"
+// @Success 201 {object} models.RegisterResponse
+// @Router /users/register [post]
 func (idb *InDB) Register(c *gin.Context) {
 	var (
 		user models.User
@@ -34,6 +42,14 @@ func (idb *InDB) Register(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H(data))
 }
 
+// Login godoc
+// @Summary Login existing user
+// @Description Login existing user
+// @Tag User
+// @Produce json
+// @Param user body models.LoginRequest true "Login user"
+// @Success 201 {object} models.LoginResponse
+// @Router /users/login [post]
 func (idb *InDB) Login(c *gin.Context) {
 	var (
 		login models.Login
@@ -64,6 +80,17 @@ func (idb *InDB) Login(c *gin.Context) {
 	})
 }
 
+// Update godoc
+// @Summary Update existing user
+// @Description Update existing user
+// @Tag User
+// @Produce json
+// @Security Bearer
+// @Param authorization header string true "Authorization"
+// @Param userId query int true "Update user"
+// @Param user body models.User true "Update user"
+// @Success 200 {object} models.User
+// @Router /users [put]
 func (idb *InDB) UpdateUser(c *gin.Context) {
 	var user models.User
 	userId := utils.GetUserId(c)
@@ -87,6 +114,16 @@ func (idb *InDB) UpdateUser(c *gin.Context) {
 	c.JSON(http.StatusOK, data)
 }
 
+// Delete godoc
+// @Summary Delete existing user
+// @Description Delete existing user
+// @Tag User
+// @Produce json
+// @Security Bearer
+// @Param authorization header string true "Authorization"
+// @Param userId query int true "Delete user"
+// @Success 200 {object} models.DeleteResponse
+// @Router /users [delete]
 func (idb *InDB) DeleteUser(c *gin.Context) {
 	var user models.User
 	userId := utils.GetUserId(c)

@@ -8,6 +8,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// GetSocialMedias godoc
+// @Summary Get all social medias of speicifc user
+// @Description Get all social medias of speicifc user
+// @Tag socialMedia
+// @Produce json
+// @Success 200 {object} models.GetSocialMediaResponse
+// @Router /socialMedias [get]
 func (idb *InDB) GetSocialMedias(c *gin.Context) {
 	var (
 		socials []models.SocialMedia
@@ -38,9 +45,19 @@ func (idb *InDB) GetSocialMedias(c *gin.Context) {
 		socials[i].User.Username = user.Username
 	}
 
-	c.JSON(http.StatusOK, socials)
+	c.JSON(http.StatusOK, gin.H{
+		"social_medias": socials,
+	})
 }
 
+// AddSocialMedia godoc
+// @Summary Add new social media
+// @Description Add new social media
+// @Tag socialMedia
+// @Produce json
+// @Param user body models.CreateSocialMediaRequest true "Create social media"
+// @Success 201 {object} models.CreateSocialMediaResponse
+// @Router /socialMedias [post]
 func (idb *InDB) AddSocialMedia(c *gin.Context) {
 	var social models.SocialMedia
 	userId := utils.GetUserId(c)
@@ -70,6 +87,17 @@ func (idb *InDB) AddSocialMedia(c *gin.Context) {
 	c.JSON(http.StatusCreated, data)
 }
 
+// Update godoc
+// @Summary Update existing social media
+// @Description Update existing social media
+// @Tag socialMedia
+// @Produce json
+// @Security Bearer
+// @Param authorization header string true "Authorization"
+// @Param socialMediaId query int true "Update social media"
+// @Param socialMedia body models.UpdateSocialMediaRequest true "Update social media"
+// @Success 200 {object} models.UpdateSocialMediaResponse
+// @Router /socialMedias [put]
 func (idb *InDB) UpdateSocialMedia(c *gin.Context) {
 	var socials *models.SocialMedia
 	socialMediaId := c.Param("socialMediaId")
@@ -108,6 +136,16 @@ func (idb *InDB) UpdateSocialMedia(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+// Delete godoc
+// @Summary Delete existing social media
+// @Description Delete existing social media
+// @Tag socialMedia
+// @Produce json
+// @Security Bearer
+// @Param authorization header string true "Authorization"
+// @Param socialMediaId query int true "Delete social media"
+// @Success 200 {object} models.DeleteResponse
+// @Router /socialMedias [delete]
 func (idb *InDB) DeleteSocialMedia(c *gin.Context) {
 	var social *models.SocialMedia
 	socialMediaId := c.Param("socialMediaId")

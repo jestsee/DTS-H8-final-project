@@ -8,6 +8,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// GetComments godoc
+// @Summary Get all comments of speicifc user
+// @Description Get all comments of speicifc user
+// @Tag comment
+// @Produce json
+// @Success 200 {array} models.GetCommentResponse
+// @Router /comments [get]
 func (idb *InDB) GetComments(c *gin.Context) {
 	var (
 		comments []models.Comment
@@ -61,6 +68,14 @@ func (idb *InDB) GetComments(c *gin.Context) {
 
 // TODO harus autentikasi dan autorisasi
 // berarti cuma boleh nambahin komen di foto sendiri kah?
+// AddComment godoc
+// @Summary Add new comment
+// @Description Add new comment
+// @Tag comment
+// @Produce json
+// @Param user body models.CreateCommentRequest true "Create comment"
+// @Success 201 {object} models.CreateCommentResponse
+// @Router /comments [post]
 func (idb *InDB) AddComment(c *gin.Context) {
 	var (
 		comment models.Comment
@@ -108,6 +123,17 @@ func (idb *InDB) AddComment(c *gin.Context) {
 	c.JSON(http.StatusCreated, data)
 }
 
+// Update godoc
+// @Summary Update existing comment
+// @Description Update existing comment
+// @Tag comment
+// @Produce json
+// @Security Bearer
+// @Param authorization header string true "Authorization"
+// @Param commentId query int true "Update comment"
+// @Param comment body models.UpdateCommentRequest true "Update comment"
+// @Success 200 {object} models.UpdateCommentResponse
+// @Router /comments [put]
 func (idb *InDB) UpdateComment(c *gin.Context) {
 	var comment *models.Comment
 	commentId := c.Param("commentId")
@@ -147,6 +173,16 @@ func (idb *InDB) UpdateComment(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+// Delete godoc
+// @Summary Delete existing comment
+// @Description Delete existing comment
+// @Tag Comment
+// @Produce json
+// @Security Bearer
+// @Param authorization header string true "Authorization"
+// @Param commentId query int true "Delete comment"
+// @Success 200 {object} models.DeleteResponse
+// @Router /comments [delete]
 func (idb *InDB) DeleteComment(c *gin.Context) {
 	var comment *models.Comment
 	commentId := c.Param("commentId")

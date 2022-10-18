@@ -8,6 +8,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// GetPhotos godoc
+// @Summary Get all photos of speicifc user
+// @Description Get all photos of speicifc user
+// @Tag photo
+// @Produce json
+// @Success 200 {array} models.GetPhotoResponse
+// @Router /photos [get]
 func (idb *InDB) GetPhotos(c *gin.Context) {
 	var (
 		photos []models.Photo
@@ -41,6 +48,14 @@ func (idb *InDB) GetPhotos(c *gin.Context) {
 	c.JSON(http.StatusOK, photos)
 }
 
+// AddPhoto godoc
+// @Summary Add new photo
+// @Description Add new photo
+// @Tag photo
+// @Produce json
+// @Param user body models.CreatePhotoRequest true "Create photo"
+// @Success 201 {object} models.CreatePhotoResponse
+// @Router /photos [post]
 func (idb *InDB) AddPhoto(c *gin.Context) {
 	var photo models.Photo
 	userId := utils.GetUserId(c)
@@ -71,6 +86,17 @@ func (idb *InDB) AddPhoto(c *gin.Context) {
 	c.JSON(http.StatusCreated, resp)
 }
 
+// Update godoc
+// @Summary Update existing photo
+// @Description Update existing photo
+// @Tag photo
+// @Produce json
+// @Security Bearer
+// @Param authorization header string true "Authorization"
+// @Param photoId query int true "Update photo"
+// @Param photo body models.UpdatePhotoRequest true "Update photo"
+// @Success 200 {object} models.UpdatePhotoResponse
+// @Router /photos [put]
 func (idb *InDB) UpdatePhoto(c *gin.Context) {
 	var photo *models.Photo
 	photoId := c.Param("photoId")
@@ -110,6 +136,16 @@ func (idb *InDB) UpdatePhoto(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+// Delete godoc
+// @Summary Delete existing photo
+// @Description Delete existing photo
+// @Tag Photo
+// @Produce json
+// @Security Bearer
+// @Param authorization header string true "Authorization"
+// @Param photoId query int true "Delete photo"
+// @Success 200 {object} models.DeleteResponse
+// @Router /photos [delete]
 func (idb *InDB) DeletePhoto(c *gin.Context) {
 	var photo *models.Photo
 	id := c.Param("photoId")
