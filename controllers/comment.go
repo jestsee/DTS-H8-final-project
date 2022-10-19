@@ -11,6 +11,8 @@ import (
 // GetComments godoc
 // @Summary Get all comments of speicifc user
 // @Description Get all comments of speicifc user
+// @Security Bearer
+// @Param authorization header string true "Authorization"
 // @Tag comment
 // @Produce json
 // @Success 200 {array} models.GetCommentResponse
@@ -71,6 +73,8 @@ func (idb *InDB) GetComments(c *gin.Context) {
 // AddComment godoc
 // @Summary Add new comment
 // @Description Add new comment
+// @Security Bearer
+// @Param authorization header string true "Authorization"
 // @Tag comment
 // @Produce json
 // @Param user body models.CreateCommentRequest true "Create comment"
@@ -91,14 +95,14 @@ func (idb *InDB) AddComment(c *gin.Context) {
 		return
 	}
 
-	if photo.User_id != userId {
-		c.AbortWithStatusJSON(http.StatusUnauthorized,
-			gin.H{
-				"error":   "Unauthorized",
-				"message": "you are not allowed to access this data",
-			})
-		return
-	}
+	// if photo.User_id != userId {
+	// 	c.AbortWithStatusJSON(http.StatusUnauthorized,
+	// 		gin.H{
+	// 			"error":   "Unauthorized",
+	// 			"message": "you are not allowed to access this data",
+	// 		})
+	// 	return
+	// }
 
 	comment.User_id = userId
 

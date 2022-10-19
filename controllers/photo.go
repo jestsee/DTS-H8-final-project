@@ -12,6 +12,8 @@ import (
 // @Summary Get all photos of speicifc user
 // @Description Get all photos of speicifc user
 // @Tag photo
+// @Security Bearer
+// @Param authorization header string true "Authorization"
 // @Produce json
 // @Success 200 {array} models.GetPhotoResponse
 // @Router /photos [get]
@@ -52,6 +54,8 @@ func (idb *InDB) GetPhotos(c *gin.Context) {
 // @Summary Add new photo
 // @Description Add new photo
 // @Tag photo
+// @Security Bearer
+// @Param authorization header string true "Authorization"
 // @Produce json
 // @Param user body models.CreatePhotoRequest true "Create photo"
 // @Success 201 {object} models.CreatePhotoResponse

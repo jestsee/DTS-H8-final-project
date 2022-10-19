@@ -304,6 +304,12 @@ paths:
       summary: Delete existing comment
     get:
       description: Get all comments of speicifc user
+      parameters:
+      - description: Authorization
+        in: header
+        name: authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -313,10 +319,17 @@ paths:
             items:
               $ref: '#/definitions/models.GetCommentResponse'
             type: array
+      security:
+      - Bearer: []
       summary: Get all comments of speicifc user
     post:
       description: Add new comment
       parameters:
+      - description: Authorization
+        in: header
+        name: authorization
+        required: true
+        type: string
       - description: Create comment
         in: body
         name: user
@@ -330,6 +343,8 @@ paths:
           description: Created
           schema:
             $ref: '#/definitions/models.CreateCommentResponse'
+      security:
+      - Bearer: []
       summary: Add new comment
     put:
       description: Update existing comment
@@ -386,6 +401,12 @@ paths:
       summary: Delete existing photo
     get:
       description: Get all photos of speicifc user
+      parameters:
+      - description: Authorization
+        in: header
+        name: authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -395,10 +416,17 @@ paths:
             items:
               $ref: '#/definitions/models.GetPhotoResponse'
             type: array
+      security:
+      - Bearer: []
       summary: Get all photos of speicifc user
     post:
       description: Add new photo
       parameters:
+      - description: Authorization
+        in: header
+        name: authorization
+        required: true
+        type: string
       - description: Create photo
         in: body
         name: user
@@ -412,6 +440,8 @@ paths:
           description: Created
           schema:
             $ref: '#/definitions/models.CreatePhotoResponse'
+      security:
+      - Bearer: []
       summary: Add new photo
     put:
       description: Update existing photo
@@ -468,6 +498,12 @@ paths:
       summary: Delete existing social media
     get:
       description: Get all social medias of speicifc user
+      parameters:
+      - description: Authorization
+        in: header
+        name: authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -475,10 +511,17 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.GetSocialMediaResponse'
+      security:
+      - Bearer: []
       summary: Get all social medias of speicifc user
     post:
       description: Add new social media
       parameters:
+      - description: Authorization
+        in: header
+        name: authorization
+        required: true
+        type: string
       - description: Create social media
         in: body
         name: user
@@ -492,6 +535,8 @@ paths:
           description: Created
           schema:
             $ref: '#/definitions/models.CreateSocialMediaResponse'
+      security:
+      - Bearer: []
       summary: Add new social media
     put:
       description: Update existing social media

@@ -12,6 +12,8 @@ import (
 // @Summary Get all social medias of speicifc user
 // @Description Get all social medias of speicifc user
 // @Tag socialMedia
+// @Security Bearer
+// @Param authorization header string true "Authorization"
 // @Produce json
 // @Success 200 {object} models.GetSocialMediaResponse
 // @Router /socialMedias [get]
@@ -54,6 +56,8 @@ func (idb *InDB) GetSocialMedias(c *gin.Context) {
 // @Summary Add new social media
 // @Description Add new social media
 // @Tag socialMedia
+// @Security Bearer
+// @Param authorization header string true "Authorization"
 // @Produce json
 // @Param user body models.CreateSocialMediaRequest true "Create social media"
 // @Success 201 {object} models.CreateSocialMediaResponse

@@ -27,11 +27,25 @@ const docTemplate = `{
     "paths": {
         "/comments": {
             "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Get all comments of speicifc user",
                 "produces": [
                     "application/json"
                 ],
                 "summary": "Get all comments of speicifc user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -90,12 +104,24 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Add new comment",
                 "produces": [
                     "application/json"
                 ],
                 "summary": "Add new comment",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "description": "Create comment",
                         "name": "user",
@@ -154,11 +180,25 @@ const docTemplate = `{
         },
         "/photos": {
             "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Get all photos of speicifc user",
                 "produces": [
                     "application/json"
                 ],
                 "summary": "Get all photos of speicifc user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -217,12 +257,24 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Add new photo",
                 "produces": [
                     "application/json"
                 ],
                 "summary": "Add new photo",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "description": "Create photo",
                         "name": "user",
@@ -281,11 +333,25 @@ const docTemplate = `{
         },
         "/socialMedias": {
             "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Get all social medias of speicifc user",
                 "produces": [
                     "application/json"
                 ],
                 "summary": "Get all social medias of speicifc user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -341,12 +407,24 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Add new social media",
                 "produces": [
                     "application/json"
                 ],
                 "summary": "Add new social media",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "description": "Create social media",
                         "name": "user",
